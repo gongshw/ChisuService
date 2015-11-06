@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongshw.chisu.service.mapper.DelayEmailMapper">
+	<insert id="insertDelayEmail">
+		INSERT INTO delay_email (recipe_id, receive_time, plan_send_time, real_send_time, subject, content)
+		VALUES (#{recipeId},
+		        #{receiveTime},
+		        #{planSendTime},
+		        NULL, #{subject}, #{content})
+	</insert>
+	<select id="countAllDelayEmailsByEmail" resultType="int">
+		SELECT count(*)
+		FROM delay_email
+			JOIN recipe ON recipe.id = delay_email.recipe_id
+		WHERE recipe.creator_email = #{email}
+	</select>
+	<select id="getEmailToSend" resultType="DelayEmail">
+		SELECT *
+		FROM delay_email
+		WHERE plan_send_time &lt; #{sendTime} AND real_send_time IS NULL
+	</select>
+	<update id="markAsSent">
+		UPDATE delay_email
+		SET real_send_time = #{sendTime}
+		WHERE id = #{id}
+	</update>
+</mapper>

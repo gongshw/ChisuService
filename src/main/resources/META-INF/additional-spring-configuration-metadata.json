@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "chisu.email.sendInterval",
+      "type": "java.lang.String",
+      "description": "Description for chisu.email.sendInterval."
+    }
+  ]
+}
